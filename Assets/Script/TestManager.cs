@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,14 +17,18 @@ public class TestManager : MonoBehaviour
     [SerializeField] float angleSpeed = 0.1f;
     [SerializeField] TestSerializeReference test1;
     [SerializeField] TestSerializeReference test2;
-
+    [SerializeField] List<Bullet> bullets = new List<Bullet>();
 
     // Start is called before the first frame update
     void Start()
     {
+        for(int i = 0; i < bullets.Count; i++)
+        {
+            bullets[i].SetTarget(enemy.gameObject);
+        }
         //Debug.Log(string.Format("test1 : {0} // {1}", test1.value1, test1.value2));
         //Debug.Log(string.Format("test2 : {0} // {1}", test2.value1, test2.value2));
-
+        /*
         var itemPos = Camera.main.ScreenToWorldPoint(item.transform.position);
         var enemyPos = Camera.main.ScreenToWorldPoint(enemy.transform.position);
 
@@ -32,7 +37,7 @@ public class TestManager : MonoBehaviour
         float b = Mathf.Atan2(vector2.y, vector2.x) * (float)(180 / Math.PI);
         Debug.Log(string.Format("a : {0} // b  : {1}", a, b));
 
-        // 방향 벡터
+        // 회전
         Vector2 direction = enemy.transform.position - item.transform.position;
         float x = direction.x * Mathf.Cos(angle) - direction.y * Mathf.Sin(angle);
         float y = direction.x * Mathf.Sin(angle) + direction.y * Mathf.Cos(angle);
@@ -40,12 +45,19 @@ public class TestManager : MonoBehaviour
         newDir = newDir.normalized;
         itemPos = new Vector3(itemPos.x + newDir.x * Time.deltaTime * angleSpeed, itemPos.y + newDir.y * angleSpeed * Time.deltaTime, itemPos.z);
         item.transform.position = Camera.main.WorldToScreenPoint(itemPos);
-
+        */
     }
 
     // Update is called once per frame
     void Update()
     {
+        //마우스 위치에 따라 오브젝트 이동
+        var worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        worldPos.z = 0f;
+        enemy.transform.position = worldPos;
+        //
+
+        /*
         var itemPos = Camera.main.ScreenToWorldPoint(item.transform.position);
         var enemyPos = Camera.main.ScreenToWorldPoint(enemy.transform.position);
 
@@ -66,6 +78,7 @@ public class TestManager : MonoBehaviour
         var worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         worldPos.z = 0f;
         enemy.transform.position = worldPos;
+        */
         /*
         var itemPos = Camera.main.ScreenToWorldPoint(item.transform.position);
         var enemyPos = Camera.main.ScreenToWorldPoint(enemy.transform.position);
