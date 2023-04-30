@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class Bullet : MonoBehaviour
 {
@@ -14,8 +16,9 @@ public class Bullet : MonoBehaviour
     Transform _transform;
     Transform _targetTrans;
     [SerializeField] float _moveSpeed = 10f;
+    [SerializeField] float _maxDegree = 50f;
 
-    public void Start()
+    public void Awake()
     {
         _camera = Camera.main;
         _transform = this.transform;
@@ -48,33 +51,18 @@ public class Bullet : MonoBehaviour
         }
         else
         {
-            //내적
             Vector2 newDirection = _targetTrans.position - _transform.position;
-            float dot = _direction.x * newDirection.x + _direction.y + newDirection.y;
-            if(dot == 0) // 평행
-            {
-                _transform.position = new Vector3(_transform.position.x + _normalized.x * Time.deltaTime * _moveSpeed,
+            float dot = _normalized.x * newDirection.x + _normalized.y + newDirection.y;
+            Vector3 newPos = new Vector3(_transform.position.x + _normalized.x * Time.deltaTime * _moveSpeed,
                     _transform.position.y + _normalized.y * Time.deltaTime * _moveSpeed,
                     _transform.position.z);
+            if (dot == 0) // 평행
+            {
+                _transform.position = newPos;
             }
             else
             {
-                //내적.
-                float value1 = Vector2.Dot(_direction, newDirection);
-                float value2 = (_direction.magnitude * newDirection.magnitude);
-                double degree = Mathf.Acos(value1 / value2) * 180 / Math.PI;
-                Debug.Log(string.Format("{0} // {1} // {2}", value1, value2, degree));
-
-                Vector2 dir_right = new Vector2(_direction.y, _direction.x * -1);
-                double dot_right = _targetTrans.position.x * dir_right.x + _targetTrans.position.y * dir_right.y;
-
-                if (dot_right > 0) // 시계방향 회전
-                {
-
-                }
-                else //반시계방향 회전
-                {
-                }
+                float rad = (float)Math.PI / 180 * _maxDegree;
             }
         }
     }

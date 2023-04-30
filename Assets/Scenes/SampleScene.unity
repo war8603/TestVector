@@ -515,6 +515,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 3
+  _maxDegree: 10
 --- !u!1 &409731818
 GameObject:
   m_ObjectHideFlags: 0
